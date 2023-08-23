@@ -1,0 +1,17 @@
+@import './../../../styles/_variables.scss';
+
+.footer {
+  background: $primary-orange;
+  background: linear-gradient(
+    180deg,
+    rgba(249, 78, 48, 1) 0%,
+    rgba(255, 100, 51, 1) 100%
+  );
+  .footer-center {
+    justify-content: center;
+  }
+  .copyright-text {
+    display: block;
+    margin-top: 0.7rem;
+  }
+}
