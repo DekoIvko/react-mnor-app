@@ -3,7 +3,17 @@ import { appConfig } from "../appConfig";
 
 export const GetProductsService = () => {
   try {
-    return Axios.get(`${appConfig.baseApiURL}products`).then(
+    return Axios.get(`${appConfig.baseApiURL}products`).then((response) => {
+      return response;
+    });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const GetProductsServiceSingle = (product: string) => {
+  try {
+    return Axios.get(`${appConfig.baseApiURL}products/${product}`).then(
       (response) => {
         return response;
       }
@@ -13,16 +23,14 @@ export const GetProductsService = () => {
   }
 };
 
-export const GetProductsServiceSingle = (product: string) => {
-    try {
-      return Axios.get(`${appConfig.baseApiURL}products/${product}`).then(
-        (response) => {
-          return response;
-        }
-      );
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  };
-
-
+export const GetProductsBySearchService = (searchTerm: string) => {
+  try {
+    return Axios.get(
+      `${appConfig.baseApiURL}products/search?q=${searchTerm}`
+    ).then((response) => {
+      return response;
+    });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};

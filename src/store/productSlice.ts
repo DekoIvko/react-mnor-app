@@ -60,7 +60,7 @@ export const fetchAsyncProductsSingle = createAsyncThunk(
   "productSingle/fetch",
   async (product: string) => {
     const response = await GetProductsServiceSingle(product);
-    const data = response.data;
+    const data = response.data.products;
     return data;
   }
 );

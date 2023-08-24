@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./ProductSinglePage.scss";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -10,6 +9,15 @@ import {
 import { STATUS } from "../../utils/status";
 import Loader from "../../components/Loader/Loader";
 import { formatPrice } from "../../utils/helpers";
+import {
+  addToCart,
+  getCartMessageStatus,
+  setCartMessageOff,
+  setCartMessageOn,
+} from "../../store/cartSlice";
+import CartMessage from "../../components/CartMessage/CartMessage";
+
+import "./ProductSinglePage.scss";
 
 const ProductSinglePage = () => {
   const { id }: any = useParams();
@@ -17,10 +25,19 @@ const ProductSinglePage = () => {
   const product = useSelector(getProductSingle);
   const productSingleStatus = useSelector(getProductSingleStatus);
   const [quantity, setQuantity] = useState(1);
+  const cartMessageStatus = useSelector(getCartMessageStatus);
 
   useEffect(() => {
     dispatch(fetchAsyncProductsSingle(id));
-  }, []);
+
+    console.log(cartMessageStatus)
+    if (cartMessageStatus) {
+        setTimeout(() => {
+          dispatch(setCartMessageOff());
+        }, 2000);
+      }
+  }, [cartMessageStatus])
+  
 
   let discountedPrice =
     product?.price - product?.price * (product?.discountPercentage / 100);
@@ -48,6 +65,9 @@ const ProductSinglePage = () => {
     let discountedPrice =
       product?.price - product?.price * (product?.discountPercentage / 100);
     let totalPrice = quantity * discountedPrice;
+
+    dispatch(addToCart({ ...product, quantity, totalPrice, discountedPrice }));
+    dispatch(setCartMessageOn());
   };
 
   return (
@@ -206,6 +226,7 @@ const ProductSinglePage = () => {
           </div>
         </div>
       </div>
+      {cartMessageStatus && <CartMessage />}
     </main>
   );
 };

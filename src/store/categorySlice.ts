@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { STATUS } from "../utils/status";
-import { GetCategoriesService } from "../services/GetCategoriesService";
+import {
+  GetCategoriesService,
+  GetProductsOfCategoriesService,
+} from "../services/GetCategoriesService";
 
 const initialState = {
   categories: [],
@@ -26,6 +29,17 @@ const categorySlice = createSlice({
       .addCase(fetchAsyncCategories.fulfilled, (state: any, action) => {
         state.categoriesStatus = STATUS.SUCCEEDED;
         state.categories = action.payload;
+      })
+      .addCase(fetchAsyncProductsOfCategory.rejected, (state: any, action) => {
+        state.categoryProductStatus = STATUS.FAILED;
+        state.error = action.error.message;
+      })
+      .addCase(fetchAsyncProductsOfCategory.pending, (state: any, action) => {
+        state.categoryProductStatus = STATUS.LOADING;
+      })
+      .addCase(fetchAsyncProductsOfCategory.fulfilled, (state: any, action) => {
+        state.categoryProductStatus = STATUS.SUCCEEDED;
+        state.categoryProducts = action.payload;
       });
   },
 });
@@ -38,5 +52,17 @@ export const fetchAsyncCategories = createAsyncThunk(
     return data;
   }
 );
+export const fetchAsyncProductsOfCategory = createAsyncThunk(
+  "category-products/fetch",
+  async (category: string) => {
+    const response = await GetProductsOfCategoriesService(category);
+    const data = response.data.products;
+    return data;
+  }
+);
+export const getAllProductsByCategory = (state: any) =>
+  state.category.categoryProducts;
 export const getAllCategories = (state: any) => state.category.categories;
+export const getAllProductsByCategoryStatus = (state: any) =>
+  state.category.categoryProductStatus;
 export default categorySlice.reducer;

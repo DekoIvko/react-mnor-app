@@ -34,7 +34,7 @@ const Sidebar = () => {
           {categories.map((category: any, index: number) => {
             return (
               <li key={index}>
-                <Link to={`category${category}`} className="cat-list-link">
+                <Link to={`category/${category}`} className="cat-list-link">
                   {category.replace("-", " ")}
                 </Link>
               </li>

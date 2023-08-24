@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import HeadSlider from "../../components/HeadSlider/HeadSlider";
-
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategories } from "../../store/categorySlice";
 import {
@@ -11,6 +10,7 @@ import {
 import { STATUS } from "../../utils/status";
 import Loader from "../../components/Loader/Loader";
 import ProductList from "../../components/ProductList/ProductList";
+
 import "./HomePage.scss";
 
 const HomePage = () => {
